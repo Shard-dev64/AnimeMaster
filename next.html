@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Chapter</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    @keyframes gradientBG {
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin: 20px 0 10px 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .chapter-image {
+      max-width: 300px;
+      width: 90%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+      display: none; /* initially hidden */
+    }
+
+    .upload-btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .upload-btn:hover {
+      transform: scale(1.1);
+      background: rgba(0,0,0,0.8);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .anime-label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 5px;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      display: none; /* initially hidden */
+    }
+
+    .chapter-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Single Chapter -->
+  <div class="chapter-container">
+    <h2 id="chapterTitle">Chapter</h2>
+    <label class="upload-btn" for="file1" id="uploadBtn">Add Image</label>
+    <input type="file" id="file1" accept="image/*">
+    <img class="chapter-image" id="img1" src="" alt="">
+    <div class="anime-label" id="animeLabel">Animes</div>
+  </div>
+
+  <script>
+    const file1 = document.getElementById('file1');
+    const img1 = document.getElementById('img1');
+    const chapterTitle = document.getElementById('chapterTitle');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const animeLabel = document.getElementById('animeLabel');
+
+    // Check if image is already saved in localStorage
+    window.onload = function() {
+      const savedImage = localStorage.getItem('chapterImage');
+      if(savedImage){
+        img1.src = savedImage;
+        img1.style.display = 'block';
+        animeLabel.style.display = 'block';
+        chapterTitle.style.display = 'none';
+        uploadBtn.style.display = 'none';
+      }
+    }
+
+    // Upload new image
+    file1.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = function(){
+          const dataURL = reader.result;
+          img1.src = dataURL;
+          img1.style.display = 'block';
+          animeLabel.style.display = 'block';
+          chapterTitle.style.display = 'none';
+          uploadBtn.style.display = 'none';
+          // Save to localStorage
+          localStorage.setItem('chapterImage', dataURL);
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+</body>
+</html>
